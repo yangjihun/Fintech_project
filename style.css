@@ -1,0 +1,36 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+h2 {
+  text-align: center;
+}
+
+#scheduler {
+  display: flex;
+  width: 40%;
+}
+
+.time-column {
+  flex: 0 0 60px;
+  border-right: 1px solid #ccc;
+  padding-right: 10px;
+}
+
+.time {
+  padding: 5px 0;
+}
+
+.schedule {
+  flex: 1;
+}
+
+.schedule-item {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  padding: 5px;
+  margin-bottom: 5px;
+}

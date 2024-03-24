@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day Scheduler</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    h2 {
+        text-align: center;
+    }
+
+    #scheduler {
+        display: flex;
+    }
+
+    .time-column {
+        flex: 0 0 60px;
+        border-right: 1px solid #ccc;
+        padding-right: 10px;
+    }
+
+    .time {
+        padding: 5px 0;
+    }
+
+    .schedule {
+        flex: 1;
+    }
+
+    .schedule-item {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f0f0f0;
+        padding: 5px;
+        margin-bottom: 5px;
+    }
+
+    .schedule-item-description {
+        flex: 1;
+    }
+
+    .remove-button {
+        cursor: pointer;
+        padding: 3px 8px;
+        background-color: #ff7f7f;
+        color: white;
+        border: none;
+        border-radius: 3px;
+    }
+</style>
+</head>
+<body>
+
+<h2>Day Scheduler</h2>
+
+<div id="scheduler">
+    <div class="time-column">
+        <div class="time" id="00">00:00</div>
+        <div class="time" id="01">01:00</div>
+        <div class="time" id="02">02:00</div>
+        <div class="time" id="03">03:00</div>
+        <div class="time" id="04">04:00</div>
+        <div class="time" id="05">05:00</div>
+        <div class="time" id="06">06:00</div>
+        <div class="time" id="07">07:00</div>
+        <div class="time" id="08">08:00</div>
+        <div class="time" id="09">09:00</div>
+        <div class="time" id="10">10:00</div>
+        <div class="time" id="11">11:00</div>
+        <div class="time" id="12">12:00</div>
+        <div class="time" id="13">13:00</div>
+        <div class="time" id="14">14:00</div>
+        <div class="time" id="15">15:00</div>
+        <div class="time" id="16">16:00</div>
+        <div class="time" id="17">17:00</div>
+        <div class="time" id="18">18:00</div>
+        <div class="time" id="19">19:00</div>
+        <div class="time" id="20">20:00</div>
+        <div class="time" id="21">21:00</div>
+        <div class="time" id="22">22:00</div>
+        <div class="time" id="23">23:00</div>
+    </div>
+    <div class="schedule">
+        <!-- Schedule items will be dynamically added here -->
+    </div>
+</div>
+<div id="add">
+  <input type="time" id="eventTime">
+  <input type="text" id="eventDescription">
+  <button onclick="writeScheduleItem()">Add</button>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const scheduler = document.querySelector(".schedule");
+
+        
+
+        // Add a schedule item
+        function addScheduleItem(time, description) {
+            const scheduleItem = document.createElement("div");
+            scheduleItem.classList.add("schedule-item");
+            scheduleItem.innerHTML = `
+                <div class="schedule-item-description">
+                    <strong>${time}</strong>: ${description}
+                </div>
+                <button class="remove-button">Remove</button>
+            `;
+            scheduler.appendChild(scheduleItem);
+
+            // Add event listener to remove button
+            const removeButton = scheduleItem.querySelector(".remove-button");
+            removeButton.addEventListener("click", function() {
+                scheduler.removeChild(scheduleItem);
+            });
+        }
+
+        // Example schedule items (you can replace this with your own data)
+        let scheduleItems = [
+            { time: "09:00", description: "Meeting with Client" },
+            { time: "12:00", description: "Lunch with Team" },
+            { time: "15:00", description: "Submit Report" },
+            { time: "16:00", description: "lunch"}
+        ];
+        console.log(scheduleItems);
+        function writeScheduleItem(){
+          const t = document.getElementById("eventTime").value;
+          const e = document.getElementById("eventDescription").value;
+          scheduleItem.push({time:t,description:e});
+        }
+
+        // Add example schedule items to the scheduler
+        scheduleItems.forEach(item => {
+            addScheduleItem(item.time, item.description);
+        });
+    });
+</script>
+
+</body>
+</html>
