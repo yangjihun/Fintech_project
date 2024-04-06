@@ -1,44 +1,28 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>주소로 장소 표시하기</title>
-    <style>
-        #map{
-            width:80%;
-            height:700px;
-        }
 
-        button{
-        border: 1px solid #000;
-        cursor: pointer;
-        border-radius: 20%;
-        width: 42px;
-        height: 28px;
-        }
-    </style>
-</head>
-<body>
-<div id="map" style="width:80%;height:700px;"></div>
-<p>
-    <button onclick="zoomIn()">확대</button>
-    <button onclick="zoomOut()">축소</button>
-    <span id="maplevel"></span>
-</p>
+// read csv file
+let fs = require('fs');
+let store = []; // 식당 정보
 
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9e174ef3c1ef14a74a62a3b379411a1a&libraries=services"></script>  <!--map-->
-<script>
-// 식당 정보
-let store = [];
-let mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-    mapOption = {
-        center: new kakao.maps.LatLng(37.450376, 127.129865), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
-    };
+fs.readFile("착한가격업소.csv",'utf-8',function(err,data){
+    let n = data.split('\n');
+    let c = '';
+    for(let i=0;i<n.length;i++){
+      c = n[i].split(',');
+      store.push({name:c[3],locate:c[4]});
+    }
+})
 
 // 지도를 생성합니다    
 let map = new kakao.maps.Map(mapContainer, mapOption); 
  
+
+let mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = {
+        center: new kakao.maps.LatLng(37.450376, 127.129865), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };  
+
+
 // 지도 레벨은 지도의 확대 수준을 의미합니다
 // 지도 레벨은 1부터 14레벨이 있으며 숫자가 작을수록 지도 확대 수준이 높습니다
 function zoomIn() {        
@@ -56,28 +40,21 @@ function zoomOut() {
 }
 //-----------------------------------------------------------------------------------------------
 // 주소-좌표 변환 객체를 생성합니다
-fetch('test.txt')
-  .then(response => response.text())
-  .then(data => {
-    let rows = data.split('\n');
-    for(let i = 0; i < rows.length; i++) {
-      let geocoder = new kakao.maps.services.Geocoder();
-      let columns = rows[i].split('\t');
-      let loc;
-      loc = columns[6];
-      // 주소로 좌표를 검색합니다
-    geocoder.addressSearch(loc.slice(0,-1), function(result, status) {
+var geocoder = new kakao.maps.services.Geocoder();
+for(let i=0;i<store.length;i++){
+    // 주소로 좌표를 검색합니다
+    geocoder.addressSearch(store[i].locate, function(result, status) {
     // 정상적으로 검색이 완료됐으면 
     if (status === kakao.maps.services.Status.OK) {
-        let coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
         // 결과값으로 받은 위치를 마커로 표시합니다
-        let marker = new kakao.maps.Marker({
+        var marker = new kakao.maps.Marker({
             map: map,
             position: coords
           });
             // 마커에 표시할 인포윈도우를 생성합니다 
-        let infowindow = new kakao.maps.InfoWindow({
-            content: columns[2] // 인포윈도우에 표시할 내용
+        var infowindow = new kakao.maps.InfoWindow({
+            content: store[i].name // 인포윈도우에 표시할 내용
         });
 
         // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
@@ -87,8 +64,7 @@ fetch('test.txt')
         kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
     }
 });
-    }
-  })
+}
 // 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
 function makeOverListener(map, marker, infowindow) {
     return function() {
@@ -102,6 +78,3 @@ function makeOutListener(infowindow) {
         infowindow.close();
     };
 }
-</script>
-</body>
-</html>

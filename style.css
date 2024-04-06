@@ -34,3 +34,9 @@ h2 {
   padding: 5px;
   margin-bottom: 5px;
 }
+
+button{
+  background-color: skyblue;
+  width: 60px;
+  height: 40px;
+}
